@@ -265,7 +265,7 @@ const SignUp: React.FC = () => {
                 <LoaderLine></LoaderLine>
               </Loader>
             </div>
-            <div className="w-full flex flex-col space-y-1">
+            <div className="w-full flex flex-col space-y-1 mb-2">
               <H1>{"First time here?"}</H1>
               <H3>{"Create your account below"}</H3>
             </div>
@@ -276,10 +276,11 @@ const SignUp: React.FC = () => {
                 error={emailError}
                 type="text"
                 value={email}
-                placeholder={"Email address or phone number"}
+                placeholder={"Email address"}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
               />
             )}
+
             {invitedUserEmail && (
               <Input
                 name="email"
@@ -322,18 +323,18 @@ const SignUp: React.FC = () => {
               password={password}
             />
 
-            <div className="flex flex-row gap-2  mt-5  !items-start !justify-start p-1">
+            <div className="flex flex-row gap-2  mt-5  !items-start !justify-start p-1 w-full">
                 <Checkbox
                 checked={adhere}
                 defaultChecked={adhere} 
-                className="data-[state=checked]:border-green-900 border-1.5 data-[state=checked]:bg-teal-800 data-[state=checked]:text-white dark:data-[state=checked]:border-green-700 dark:data-[state=checked]:bg-teal-700"
+                className="data-[state=checked]:border-green-900 border-2 data-[state=checked]:bg-teal-800 data-[state=checked]:text-white dark:data-[state=checked]:border-green-700 dark:data-[state=checked]:bg-teal-700"
                 onClick={() =>  setAdhere(!adhere)}
                 onCheckedChange={(checked) => {
                   return checked
                 }
                 }
                  />
-              <div className="font-Work col-span-2 flex items-start justify-start">
+              <div className="-font-work-sans col-span-2 flex items-start justify-start">
                 <p className="text-[#000] text-sm">
                   I agree to adhere to
                 </p>
@@ -351,7 +352,7 @@ const SignUp: React.FC = () => {
               <Button
                 variant={'primary'}
                 size={'lg'}
-                className="w-full bg-[#0F6862]"
+                className="w-full bg-[#0F6862] rounded-none !py-6 px-4 text-lg"
                 onClick={() => handleSubmit()}
               >{isPending ? "Creating your account..." : btnName}</Button>
               <div className="mt-10 flex items-end justify-end ">
@@ -362,10 +363,10 @@ const SignUp: React.FC = () => {
 
           </form>
         </SignUpForm>
-        <ImageWrapper>
+        <ImageWrapper >
           <div className="overlay"></div>
-          <StyledImage alt="#" src={"/assets/Image.png"} fill />
-          <Absolute>
+          <StyledImage className="" alt="#" src={"/assets/Image.png"} fill />
+          <Absolute className="overflow-hidden pr-42">
             <div>Did you know?</div>
             <div>
               Farmers will have to grow 70 percent more food than what is

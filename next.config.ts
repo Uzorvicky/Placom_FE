@@ -10,6 +10,18 @@ const nextConfig: NextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+    reactStrictMode: true,
+    images: {
+      remotePatterns: [
+        {
+          protocol: "https",
+          hostname: "res.cloudinary.com",
+          port: "",
+          pathname: "/**",
+        },
+        { protocol: "https", hostname: "dummyimage.com" },
+      ],
+    },
 };
 
 export default nextConfig;

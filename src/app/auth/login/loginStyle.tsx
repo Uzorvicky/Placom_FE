@@ -81,7 +81,7 @@ export const LoginForm = styled.div<LoginFormProps>`
 `;
 
 export const ImageWrapper = styled.form`
-  width: 50%;
+  width: 75%;
   height: 100%;
   display: flex;
   background: #fff;
@@ -181,9 +181,9 @@ export const ButtonWrapper = styled.div`
 `;
 
 export const Absolute = styled.div<CommonProps>`
-  width: 86%;
+  width: 50%;
   color: #fff;
-  right: 2rem;
+  right: 3rem;
   z-index: 9;
   bottom: 2rem;
   text-align: right;
@@ -199,6 +199,7 @@ export const Absolute = styled.div<CommonProps>`
 export const StyledImage = styled(Image)<ImageProps>`
   object-fit: contain;
   object-position: center;
+  
   animation: ${slideInFromBottom} 0.5s ease-out;
 
   @media screen and (max-width: 800px) {

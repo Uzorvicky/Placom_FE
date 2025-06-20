@@ -13,11 +13,29 @@ interface PasswordStrengthResult {
   lengthValid: boolean;
 }
 
-const PasswordStrengthChecker: React.FC<PasswordStrengthCheckerProps> = ({ 
-  password, 
-  checkStatus 
+const PasswordStrengthChecker: React.FC<PasswordStrengthCheckerProps> = ({
+  password,
+  checkStatus
 }) => {
+
   const checkPasswordStrength = (): PasswordStrengthResult => {
+
+    if (password.trim() === '') {
+       if (checkStatus) {
+      checkStatus(false);
+    }
+
+      return {
+        uppercase: false,
+        lowercase: false,
+        number: false,
+        specialChar: false,
+        lengthValid: false,
+      };
+
+    }
+
+
     const hasUppercase = /[A-Z]/.test(password);
     const hasLowercase = /[a-z]/.test(password);
     const hasNumber = /\d/.test(password);
@@ -27,10 +45,10 @@ const PasswordStrengthChecker: React.FC<PasswordStrengthCheckerProps> = ({
     if (checkStatus) {
       checkStatus(
         hasLowercase &&
-          hasNumber &&
-          hasUppercase &&
-          hasSpecialChar &&
-          isLengthValid
+        hasNumber &&
+        hasUppercase &&
+        hasSpecialChar &&
+        isLengthValid
       );
     }
 
@@ -50,35 +68,35 @@ const PasswordStrengthChecker: React.FC<PasswordStrengthCheckerProps> = ({
       <ul className="list-disc text-xs">
         <li
           className={
-            passwordStrength.uppercase ? "text-green-500" : "text-red-500"
+            passwordStrength.uppercase ? "text-green-700" : "text-red-700"
           }
         >
           Uppercase: {passwordStrength.uppercase ? "Pass" : "Fail"}
         </li>
         <li
           className={
-            passwordStrength.lowercase ? "text-green-500" : "text-red-500"
+            passwordStrength.lowercase ? "text-green-700" : "text-red-700"
           }
         >
           Lowercase: {passwordStrength.lowercase ? "Pass" : "Fail"}
         </li>
         <li
           className={
-            passwordStrength.number ? "text-green-500" : "text-red-500"
+            passwordStrength.number ? "text-green-700" : "text-red-700"
           }
         >
           Number: {passwordStrength.number ? "Pass" : "Fail"}
         </li>
         <li
           className={
-            passwordStrength.specialChar ? "text-green-500" : "text-red-500"
+            passwordStrength.specialChar ? "text-green-700" : "text-red-700"
           }
         >
           Special Character: {passwordStrength.specialChar ? "Pass" : "Fail"}
         </li>
         <li
           className={
-            passwordStrength.lengthValid ? "text-green-500" : "text-red-500"
+            passwordStrength.lengthValid ? "text-green-700" : "text-red-700"
           }
         >
           Minimum Length: {passwordStrength.lengthValid ? "Pass" : "Fail"}
