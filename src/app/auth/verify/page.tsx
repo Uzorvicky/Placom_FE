@@ -9,11 +9,10 @@ import { useRouter } from "next/navigation";
 import Card from "@/shared/authCard";
 import styled from "styled-components";
 import AuthLayout from "../Authlayout";
-import Heading from "@/shared/heading";
-import { H1, H3, } from "@/shared/heading/headingStyles";
+import {  H3, } from "@/shared/heading/headingStyles";
 import { useMutation } from "@tanstack/react-query";
 import api from "@/services/api";
-import { MouseEvent, FormEvent, ClipboardEvent, KeyboardEvent, ChangeEvent } from "react";
+import { MouseEvent, } from "react";
 
 
 interface VerifyForgotPasswordPayload {
@@ -126,6 +125,7 @@ const VerifyForgotPassword: React.FC = () => {
                     toast.success(data?.message);
                     // Redirect user to reset password
                     router.push("/auth/reset-password");
+                     router.push("/auth/verified");
                 },
                 onError: (error: ApiError) => {
                     const errorMessage = error?.message || "Verification failed";
@@ -218,7 +218,7 @@ const Section = styled.div`
   justify-content: space-between;
 `;
 
-const VerifyForgotPasswordWrapper = styled.div`
+export const VerifyForgotPasswordWrapper = styled.div`
   height: 100%;
   display: flex;
   padding: 0 1rem;
