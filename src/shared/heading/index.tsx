@@ -31,7 +31,7 @@ const Heading: React.FC<HeadingProps> = ({
           width={40}
           height={40}
           alt="FA Logo"
-          src="/assets/FALogo.png"
+          src="/assets/placom_logo.png"
         />
       )}
       <H1 style={headingStyle} fontSize={headingSize}>

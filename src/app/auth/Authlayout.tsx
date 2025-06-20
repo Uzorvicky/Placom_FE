@@ -5,17 +5,17 @@ import { ReactNode } from "react";
 
 interface AuthLayoutProps {
   children: ReactNode;
-//   login: boolean;
-//   register: boolean;
+  register: boolean;
 }
 
-const AuthLayout: React.FC<AuthLayoutProps> = ({ children,}) => {
+const AuthLayout: React.FC<AuthLayoutProps> = ({ children, register}) => {
   return (
     <Layout>
       <HeaderWrapper>
         <Header 
         // isAuthScreen 
-        // login={login} register={register}
+        // login={login} 
+        register={register}
          />
       </HeaderWrapper>
       <Body>{children}</Body>

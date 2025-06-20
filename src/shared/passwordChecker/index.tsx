@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 interface PasswordStrengthCheckerProps {
   password: string;
@@ -18,12 +18,12 @@ const PasswordStrengthChecker: React.FC<PasswordStrengthCheckerProps> = ({
   checkStatus
 }) => {
 
-  const checkPasswordStrength = (): PasswordStrengthResult => {
-
+  const passwordStrength = useMemo((): PasswordStrengthResult => {
+    // Handle empty password case
     if (password.trim() === '') {
-       if (checkStatus) {
-      checkStatus(false);
-    }
+      if (checkStatus) {
+        checkStatus(false);
+      }
 
       return {
         uppercase: false,
@@ -32,24 +32,19 @@ const PasswordStrengthChecker: React.FC<PasswordStrengthCheckerProps> = ({
         specialChar: false,
         lengthValid: false,
       };
-
     }
 
-
+    // Check password strength criteria
     const hasUppercase = /[A-Z]/.test(password);
     const hasLowercase = /[a-z]/.test(password);
     const hasNumber = /\d/.test(password);
     const hasSpecialChar = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
     const isLengthValid = password.length >= 8;
 
+    const isAllValid = hasLowercase && hasNumber && hasUppercase && hasSpecialChar && isLengthValid;
+
     if (checkStatus) {
-      checkStatus(
-        hasLowercase &&
-        hasNumber &&
-        hasUppercase &&
-        hasSpecialChar &&
-        isLengthValid
-      );
+      checkStatus(isAllValid);
     }
 
     return {
@@ -59,47 +54,33 @@ const PasswordStrengthChecker: React.FC<PasswordStrengthCheckerProps> = ({
       specialChar: hasSpecialChar,
       lengthValid: isLengthValid,
     };
+  }, [password, checkStatus]);
+
+  const getStatusText = (isValid: boolean): string => {
+    return isValid ? "Pass" : "Fail";
   };
 
-  const passwordStrength = checkPasswordStrength();
+  const getStatusClass = (isValid: boolean): string => {
+    return isValid ? "text-green-700" : "text-red-700";
+  };
 
   return (
     <div className="pl-5 mt-2 w-full">
       <ul className="list-disc text-xs">
-        <li
-          className={
-            passwordStrength.uppercase ? "text-green-700" : "text-red-700"
-          }
-        >
-          Uppercase: {passwordStrength.uppercase ? "Pass" : "Fail"}
+        <li className={getStatusClass(passwordStrength.uppercase)}>
+          Uppercase: {getStatusText(passwordStrength.uppercase)}
         </li>
-        <li
-          className={
-            passwordStrength.lowercase ? "text-green-700" : "text-red-700"
-          }
-        >
-          Lowercase: {passwordStrength.lowercase ? "Pass" : "Fail"}
+        <li className={getStatusClass(passwordStrength.lowercase)}>
+          Lowercase: {getStatusText(passwordStrength.lowercase)}
         </li>
-        <li
-          className={
-            passwordStrength.number ? "text-green-700" : "text-red-700"
-          }
-        >
-          Number: {passwordStrength.number ? "Pass" : "Fail"}
+        <li className={getStatusClass(passwordStrength.number)}>
+          Number: {getStatusText(passwordStrength.number)}
         </li>
-        <li
-          className={
-            passwordStrength.specialChar ? "text-green-700" : "text-red-700"
-          }
-        >
-          Special Character: {passwordStrength.specialChar ? "Pass" : "Fail"}
+        <li className={getStatusClass(passwordStrength.specialChar)}>
+          Special Character: {getStatusText(passwordStrength.specialChar)}
         </li>
-        <li
-          className={
-            passwordStrength.lengthValid ? "text-green-700" : "text-red-700"
-          }
-        >
-          Minimum Length: {passwordStrength.lengthValid ? "Pass" : "Fail"}
+        <li className={getStatusClass(passwordStrength.lengthValid)}>
+          Minimum Length: {getStatusText(passwordStrength.lengthValid)}
         </li>
       </ul>
     </div>

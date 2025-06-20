@@ -253,7 +253,7 @@ const SignUp: React.FC = () => {
   // if (status === "authenticated") return redirect("/market");
 
   return (
-    <AuthLayout >
+    <AuthLayout register={false}>
       <SignUpWrapper>
         <SignUpForm>
           <form className="form relative" onSubmit={handleSubmit}>
