@@ -1,14 +1,14 @@
 // store/index.ts
 import { configureStore } from "@reduxjs/toolkit";
 import {
-  persistReducer,
+  // persistReducer,
   persistStore,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
+  // FLUSH,
+  // REHYDRATE,
+  // PAUSE,
+  // PERSIST,
+  // PURGE,
+  // REGISTER,
 } from "reduxjs-toolkit-persist";
 // Authentication & Navigation
 import authReducer from "./slices/authSlice";
