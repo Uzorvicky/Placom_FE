@@ -40,6 +40,7 @@ function Button({
   variant,
   size,
   asChild = false,
+  // onClick = void,
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
