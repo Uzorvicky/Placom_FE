@@ -112,7 +112,7 @@ export const ImageWrapper = styled.form`
 `;
 
 export const Guidelines = styled(Link)<LinkProps & CommonProps>`
-  color: #f68b1e;
+  color: #0F6862;
   text-decoration: underline;
 `;
 
