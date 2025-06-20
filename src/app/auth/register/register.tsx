@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 // import AuthLayout from "../authLayout";
 // import Heading from "@/shared/heading";
 import { isValidEmail } from "@/services/utils";
-import { socialIcons } from "../login/authProviders";
 import { Loader, LoaderLine } from "@/shared/authCard/cardStyles";
 import { ErrorResponse,  RegisterResponse, } from "@/types/index"
 import { RegisterUser } from "@/services/apis/auth"
@@ -90,7 +89,6 @@ const useRegisterMutation = () => {
   });
 };
 const SignUp: React.FC = () => {
-  const { data: session, status } = useSession();
 
   const { mutateAsync, isPending } = useRegisterMutation()
 
@@ -340,13 +338,6 @@ const SignUp: React.FC = () => {
             <Text>or register with</Text>
             <Line />
           </Divider>
-          <SocialMediaIcons>
-            {socialIcons.map(({ link, icon }, idx: number) => (
-              <SocialIcons className="ml-10" key={idx} href={link}>
-                {icon}
-              </SocialIcons>
-            ))}
-          </SocialMediaIcons>
           <div className="flex items-center mt-6">
             <p className="text-[#878787] text-sm">
               By continuing you agree to FarmsAgora
