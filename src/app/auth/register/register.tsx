@@ -90,7 +90,6 @@ const useRegisterMutation = () => {
   });
 };
 const SignUp: React.FC = () => {
-  const { data: session, status } = useSession();
 
   const { mutateAsync, isPending } = useRegisterMutation()
 
