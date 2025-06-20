@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { isValidEmail } from "@/services/utils";
 import { socialIcons } from "../login/authProviders";
 import { Loader, LoaderLine } from "@/shared/authCard/cardStyles";
-import { ErrorResponse, LoginResponse, } from "@/types/index"
+import { ErrorResponse, LoginResponse, RegisterResponse, } from "@/types/index"
 import { RegisterUser } from "@/services/apis/auth"
 import {
   More,
@@ -41,7 +41,6 @@ interface User {
   type: string;
   invite_passcode?: string;
   role?: string;
-  referredBy?: string;
 }
 
 interface ApiResponse {
@@ -66,35 +65,34 @@ interface ApiError {
 
 const useRegisterMutation = () => {
 
-    return useMutation<LoginResponse, ErrorResponse, User>({
-        mutationFn: ({ email, password, role, invite_passcode }: User) => RegisterUser(email, password, role, invite_passcode),
-        // onError: (error: ErrorResponse) => {
-        //     // console.error('Login error:', error);
-        //     toast.error(error?.message)
-        // },
+  return useMutation<RegisterResponse, ErrorResponse, User>({
+ mutationFn: ({ email, password, role, invite_passcode }: User): Promise<RegisterResponse> => RegisterUser(email, password, role, invite_passcode),    // onError: (error: ErrorResponse) => {
+    //     // console.error('Login error:', error);
+    //     toast.error(error?.message)
+    // },
 
-        // onSuccess: async (data) => {
-        //     // Handle successful login
-        //     console.log(data)
-        //     if (data?.status) {
-        //         const user = {
-        //             ...data?.data?.user,
-        //             corporateEntity: data?.data?.corporateEntity,
-        //             parent: data?.data?.parent,
-        //             access_token: data?.data?.access_token
-        //         };
-        //         // update Session
-        //         //    updateSessionUser(user) as object
+    // onSuccess: async (data) => {
+    //     // Handle successful login
+    //     console.log(data)
+    //     if (data?.status) {
+    //         const user = {
+    //             ...data?.data?.user,
+    //             corporateEntity: data?.data?.corporateEntity,
+    //             parent: data?.data?.parent,
+    //             access_token: data?.data?.access_token
+    //         };
+    //         // update Session
+    //         //    updateSessionUser(user) as object
 
-        //     }
+    //     }
 
-        // },
-    });
+    // },
+  });
 };
 const SignUp: React.FC = () => {
   const { data: session, status } = useSession();
 
-  const {mutateAsync, isPending} = useRegisterMutation()
+  const { mutateAsync, isPending } = useRegisterMutation()
 
 
   const router = useRouter();
@@ -102,15 +100,11 @@ const SignUp: React.FC = () => {
   const passcodeFromMagicLink: string | undefined = searchParams.get("passcode") ?? undefined;
   const roleFromMagicLink: string | undefined = searchParams.get("role") ?? undefined;
   const invitedUserEmail: string | undefined = searchParams.get("email") ?? undefined;
-  const referredBy: string | undefined = searchParams.get("referral") ?? undefined;
 
   // Store values in localStorage/sessionStorage with null checks
   if (typeof window !== "undefined") {
     if (roleFromMagicLink) localStorage.setItem("roleFromMagicLink", roleFromMagicLink);
-    if (referredBy) {
-      sessionStorage.setItem("referredBy", referredBy);
-      localStorage.setItem("referredBy", referredBy);
-    }
+   
   }
 
   const [email, setEmail] = useState<string>("");
@@ -210,7 +204,6 @@ const SignUp: React.FC = () => {
       // The backend needs the passcode from a user invited by a corporate entity. Dynamically add it to the payload obj when it is available
       invite_passcode: passcodeFromMagicLinkInLocal?.trim() || passcodeFromMagicLink?.trim(),
       role: role || undefined,
-      referredBy: referredBy || undefined
     };
 
     try {
@@ -229,7 +222,7 @@ const SignUp: React.FC = () => {
             router.push("/auth/verification");
           }
         },
-        onError: (error: ApiError) => {
+        onError: (error: ErrorResponse) => {
           setBtnName("Create Account");
           toast(error?.message || "Something went wrong! Please try again.", {
             hideProgressBar: true,
@@ -238,9 +231,9 @@ const SignUp: React.FC = () => {
           });
 
           // When the error message is account verification issue
-          if (error?.data?.verified === false) {
-            router.push("/auth/login");
-          }
+          // if (error?.data?.verified === false) {
+          //   router.push("/auth/login");
+          // }
         },
       });
 
@@ -261,126 +254,125 @@ const SignUp: React.FC = () => {
 
   return (
     // <AuthLayout register>
-      <SignUpWrapper>
-        <SignUpForm>
-          <form className="form relative" onSubmit={handleSubmit}>
-            <div
-              className={`${isLoading ? "flex" : "hidden"
-                } absolute top-0 left-0 bg-[#ffffff56] h-full w-full z-10`}
-            >
-              <Loader>
-                <LoaderLine></LoaderLine>
-              </Loader>
-            </div>
-            {/* <Heading
+    <SignUpWrapper>
+      <SignUpForm>
+        <form className="form relative" onSubmit={handleSubmit}>
+          <div
+            className={`${isPending ? "flex" : "hidden"
+              } absolute top-0 left-0 bg-[#ffffff56] h-full w-full z-10`}
+          >
+            <Loader>
+              <LoaderLine></LoaderLine>
+            </Loader>
+          </div>
+          {/* <Heading
               heading={"First time here?"}
               subHeading={"Create your account below"}
             /> */}
-            <br />
-            {!invitedUserEmail && (
-              <Input
-                name="email"
-                error={emailError}
-                type="text"
-                value={email}
-                placeholder={"Email address or phone number"}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-              />
-            )}
-            {invitedUserEmail && (
-              <Input
-                name="email"
-                isDisabled={true}
-                error={emailError}
-                type="text"
-                value={invitedUserEmail}
-                placeholder={"Email address or phone number"}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-              />
-            )}
-            {emailError && <ErrorText>Please enter a valid email</ErrorText>}
-            <div style={{ margin: "10px 0", width: "100%" }}>
-              <Input
-                name="password"
-                type={"password"}
-                error={passwordError}
-                value={password}
-                placeholder={"Type a password"}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-              />
-              {passwordError && (
-                <ErrorText>Password must be at least 8 characters</ErrorText>
-              )}
-            </div>
+          <br />
+          {!invitedUserEmail && (
             <Input
-              type={"password"}
-              name="confirmPassword"
-              error={confirmPasswordError}
-              value={confirmPassword}
-              placeholder={"Confirm password"}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)}
+              name="email"
+              error={emailError}
+              type="text"
+              value={email}
+              placeholder={"Email address or phone number"}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
             />
-            {confirmPasswordError && (
-              <ErrorText>Password does not match</ErrorText>
+          )}
+          {invitedUserEmail && (
+            <Input
+              name="email"
+              isDisabled={true}
+              error={emailError}
+              type="text"
+              value={invitedUserEmail}
+              placeholder={"Email address or phone number"}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+            />
+          )}
+          {emailError && <ErrorText>Please enter a valid email</ErrorText>}
+          <div style={{ margin: "10px 0", width: "100%" }}>
+            <Input
+              name="password"
+              type={"password"}
+              error={passwordError}
+              value={password}
+              placeholder={"Type a password"}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+            />
+            {passwordError && (
+              <ErrorText>Password must be at least 8 characters</ErrorText>
             )}
+          </div>
+          <Input
+            type={"password"}
+            name="confirmPassword"
+            error={confirmPasswordError}
+            value={confirmPassword}
+            placeholder={"Confirm password"}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)}
+          />
+          {confirmPasswordError && (
+            <ErrorText>Password does not match</ErrorText>
+          )}
 
-            {/* <PasswordStrengthChecker
+          {/* <PasswordStrengthChecker
               checkStatus={(status: boolean) => setCheckPass(status)}
               password={password}
             /> */}
 
-            <br />
-            <br />
-            <ButtonWrapper>
-              <Button
-                className=""
-                onClick={() => handleSubmit()}
-              >{isLoading ? "Creating your account..." : btnName}</Button>
-
-              {/* <Agree mobileAlign mt="10px" align="flex-end">
+          <br />
+          <br />
+          <ButtonWrapper>
+            <Button
+              className=""
+              onClick={() => handleSubmit()}
+            >{isPending ? "Creating your account..." : btnName}</Button>
+            {/* <Agree mobileAlign mt="10px" align="flex-end">
                 Already have an account? {" "}
                 <Guidelines href={"/auth/login"}>Login</Guidelines>{" "}
               </Agree> */}
-            </ButtonWrapper>
-            <br />
-            <Divider>
-              <Line />
-              <Text>or register with</Text>
-              <Line />
-            </Divider>
-            <SocialMediaIcons>
-              {socialIcons.map(({ link, icon }, idx: number) => (
-                <SocialIcons className="ml-10" key={idx} href={link}>
-                  {icon}
-                </SocialIcons>
-              ))}
-            </SocialMediaIcons>
-            <div className="flex items-center mt-6">
-              <p className="text-[#878787] text-sm">
-                By continuing you agree to FarmsAgora
-              </p>
-              <Link
-                className="text-[#f68b1e] pl-1 text-sm underline"
-                href={"/privacy-policy"}
-              >
-                {"Privacy Policy"}
-              </Link>
-            </div>
-          </form>
-        </SignUpForm>
-        <ImageWrapper>
-          <div className="overlay"></div>
-          <StyledImage alt="#" src={"/assets/Image-2.png"} fill />
-          <Absolute>
-            <div>Did you know?</div>
-            <div>
-              Farmers will have to grow 70 percent more food than what is
-              currently produced to feed the world's growing population by 2050.
-            </div>
-            <More>see more facts</More>
-          </Absolute>
-        </ImageWrapper>
-      </SignUpWrapper>
+          </ButtonWrapper>
+          <br />
+          <Divider>
+            <Line />
+            <Text>or register with</Text>
+            <Line />
+          </Divider>
+          <SocialMediaIcons>
+            {socialIcons.map(({ link, icon }, idx: number) => (
+              <SocialIcons className="ml-10" key={idx} href={link}>
+                {icon}
+              </SocialIcons>
+            ))}
+          </SocialMediaIcons>
+          <div className="flex items-center mt-6">
+            <p className="text-[#878787] text-sm">
+              By continuing you agree to FarmsAgora
+            </p>
+            <Link
+              className="text-[#f68b1e] pl-1 text-sm underline"
+              href={"/privacy-policy"}
+            >
+              {"Privacy Policy"}
+            </Link>
+          </div>
+        </form>
+      </SignUpForm>
+      <ImageWrapper>
+        <div className="overlay"></div>
+        <StyledImage alt="#" src={"/assets/Image-2.png"} fill />
+        <Absolute>
+          <div>Did you know?</div>
+          <div>
+            Farmers will have to grow 70 percent more food than what is
+            currently produced to feed the world's growing population by 2050.
+          </div>
+          <More>see more facts</More>
+        </Absolute>
+      </ImageWrapper>
+    </SignUpWrapper>
     // </AuthLayout>
   );
 };
