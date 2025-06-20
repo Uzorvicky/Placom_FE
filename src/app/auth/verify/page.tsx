@@ -46,9 +46,9 @@ const VerifyForgotPassword: React.FC = () => {
         mutationFn: (payload) => api.verifyForgotPassword(payload)
     });
 
-      const resendOtp = useMutation<ApiResponse, ApiError, ResendOtpPayload>({
-      mutationFn:  (payload) => api.resendOtp(payload)
-});
+    const resendOtp = useMutation<ApiResponse, ApiError, ResendOtpPayload>({
+        mutationFn: (payload) => api.resendOtp(payload)
+    });
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
     const [inputError, setInputError] = useState<string | null>(null);
     const [btnText, setBtnText] = useState<string>("Continue");
@@ -72,33 +72,33 @@ const VerifyForgotPassword: React.FC = () => {
         return `Code expired...`;
     }, []);
 
-      const handleResendOtp = async (e: MouseEvent<HTMLAnchorElement>): Promise<void> => {
+    const handleResendOtp = async (e: MouseEvent<HTMLAnchorElement>): Promise<void> => {
         e.preventDefault();
         const email = localStorage.getItem("reset_password_email");
 
         if (!email) {
-          toast.error("Email not found. Please go back to forgot password.");
-          return;
+            toast.error("Email not found. Please go back to forgot password.");
+            return;
         }
 
         try {
-          resendOtp.mutate(
-            { email: email },
-            {
-              onSuccess: ({ message }: ApiResponse) => {
-                toast.success(message);
-              },
-              onError: (error: ApiError) => {
-                console.log(error, ":ERROR RESPONSE resend");
-                toast.error( error?.message || "Failed to resend OTP");
-              },
-            }
-          );
+            resendOtp.mutate(
+                { email: email },
+                {
+                    onSuccess: ({ message }: ApiResponse) => {
+                        toast.success(message);
+                    },
+                    onError: (error: ApiError) => {
+                        console.log(error, ":ERROR RESPONSE resend");
+                        toast.error(error?.message || "Failed to resend OTP");
+                    },
+                }
+            );
         } catch (error) {
-          const err = error as ApiError;
-          toast.error(err?.message || "Failed to resend OTP");
+            const err = error as ApiError;
+            toast.error(err?.message || "Failed to resend OTP");
         }
-      };
+    };
 
     const handleSubmit = async (): Promise<void> => {
 
@@ -173,10 +173,10 @@ const VerifyForgotPassword: React.FC = () => {
                             <p className="text-sm text-red-800">{inputError}</p>
                         </div>
                     )}
-                    <Section>
+                    <Section className="mt-1">
                         <Link
                             className="text-[#1B7B44]"
-                            // onClick={handleResendOtp} 
+                            onClick={handleResendOtp}
                             href="#">
                             Resend code?
                         </Link>

@@ -20,12 +20,12 @@ const UseOTP: React.FC<otpProps> = ({
     autoFocus = true }) => {
     const [value, setValue] = useState<string>("");
 
-      // Optional: Handle external value changes
-  useEffect(() => {
-    onChange?.(value);
-  }, [value, onChange]);
+    // Optional: Handle external value changes
+    useEffect(() => {
+        onChange?.(value);
+    }, [value, onChange]);
 
-    return (<div className="w-full justify-center items-center">
+    return (<div className="w-full flex justify-center items-center">
         <InputOTP
             maxLength={6}
             pattern={REGEXP_ONLY_DIGITS}
@@ -35,14 +35,14 @@ const UseOTP: React.FC<otpProps> = ({
             autoFocus={autoFocus}
         >
             <InputOTPGroup className="gap-3">
-          {[...Array(6)].map((_, index) => (
-            <InputOTPSlot 
-              key={index} 
-              index={index} 
-              className="rounded-md border p-1 !bg-white"
-            />
-          ))}
-        </InputOTPGroup>
+                {[...Array(6)].map((_, index) => (
+                    <InputOTPSlot
+                        key={index}
+                        index={index}
+                        className="rounded-md border p-1 !bg-white"
+                    />
+                ))}
+            </InputOTPGroup>
         </InputOTP>
     </div>)
 }
