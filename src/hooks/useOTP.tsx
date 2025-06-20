@@ -25,7 +25,7 @@ const UseOTP: React.FC<otpProps> = ({
     onChange?.(value);
   }, [value, onChange]);
 
-    return (<div className="w-full">
+    return (<div className="w-full justify-center items-center">
         <InputOTP
             maxLength={6}
             pattern={REGEXP_ONLY_DIGITS}
