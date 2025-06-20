@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { isValidEmail } from "@/services/utils";
 import { socialIcons } from "../login/authProviders";
 import { Loader, LoaderLine } from "@/shared/authCard/cardStyles";
-import { ErrorResponse, LoginResponse, RegisterResponse, } from "@/types/index"
+import { ErrorResponse,  RegisterResponse, } from "@/types/index"
 import { RegisterUser } from "@/services/apis/auth"
 import {
   More,
@@ -329,10 +329,10 @@ const SignUp: React.FC = () => {
               className=""
               onClick={() => handleSubmit()}
             >{isPending ? "Creating your account..." : btnName}</Button>
-            {/* <Agree mobileAlign mt="10px" align="flex-end">
-                Already have an account? {" "}
-                <Guidelines href={"/auth/login"}>Login</Guidelines>{" "}
-              </Agree> */}
+            <div className="mt-10 flex ">
+                Already have an account? 
+                <Guidelines href={"/auth/login"}>Login</Guidelines>
+              </div>
           </ButtonWrapper>
           <br />
           <Divider>
