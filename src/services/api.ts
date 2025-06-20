@@ -1,6 +1,4 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
-import { getSession } from "next-auth/react";
-
 /**
  * Returns the base URL for the API based on the current environment.
  */
@@ -40,7 +38,6 @@ class BaseApi {
     // Request interceptor
     // this.instance.interceptors.request.use(
     //   async (config: ApiConfig) => {
-    //     const session = await getSession({ req: config.req });
 
     //     if (
     //       session?.access_token &&
@@ -57,7 +54,7 @@ class BaseApi {
     // Response interceptor
     this.instance.interceptors.response.use(
       (response: AxiosResponse) => response,
-      (error: AxiosError) => {
+      (error: any) => {
         if (process.env.NODE_ENV === 'development') {
           console.error('API Error:', {
             config: error.config,
