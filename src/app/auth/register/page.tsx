@@ -358,11 +358,9 @@ const SignUp: React.FC = () => {
   );
 };
 
-// export default SignUp;
-
 export default function RegisterForm() {
   return (
-    <Suspense  fallback={<div className='max-w max-h min-h-[200px] min-w-full'><Loader2Icon className='animate-spain h-10 w-10'/></div>}>
+    <Suspense  fallback={<div className='h-screen w-full flex flex-col justify-center items-center'><Loader2Icon className='animate-spain h-10 w-10'/></div>}>
       <SignUp />
     </Suspense>
   );

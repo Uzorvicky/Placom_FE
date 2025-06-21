@@ -1,17 +1,16 @@
 "use client";
-import React, {  useState } from "react";
+import React, {  useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
 import { Loader2Icon } from "lucide-react"
 import { useRouter } from "next/navigation";
 import Card from "@/shared/authCard";
-import styled from "styled-components";
 import AuthLayout from "../Authlayout";
 import { H3, } from "@/shared/heading/headingStyles";
 import { useMutation } from "@tanstack/react-query";
 import api from "@/services/api";
 import Input from "@/shared/Input";
-
+import {VerifyForgotPasswordWrapper} from'@/components/styled/VerifyForgotPasswordWrapper'
 
 interface ResetPasswordPayload {
     email: string;
@@ -126,19 +125,12 @@ const ResetPassword: React.FC = () => {
     );
 };
 
-export default ResetPassword;
+// export default ResetPassword;
 
- const VerifyForgotPasswordWrapper = styled.div`
-  height: 100%;
-  display: flex;
-  padding: 0 1rem;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  
-  @media screen and (max-width: 800px) {
-    width: 100%;
-    height: 100%;
-    padding-top: 2rem;
-  }
-`;
+export default function ResetPage() {
+  return (
+    <Suspense  fallback={<div className='h-screen w-full flex flex-col justify-center items-center'><Loader2Icon className='animate-spain h-10 w-10'/></div>}>
+      <ResetPassword />
+    </Suspense>
+  );
+}
