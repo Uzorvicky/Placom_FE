@@ -124,7 +124,7 @@ const VerifyForgotPassword: React.FC = () => {
                     setIsSuccess(true);
                     toast.success(data?.message);
                     // Redirect user to reset password
-                    router.push("/auth/reset-password");
+                    // router.push("/auth/reset-password");
                      router.push("/auth/verified");
                 },
                 onError: (error: ApiError) => {

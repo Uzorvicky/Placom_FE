@@ -71,6 +71,12 @@ export type RegisterResponse = {
   data?: object
 };
 
+export type Response = {
+  status: boolean;
+  message: string;
+  data?: object
+};
+
 export type SessionState = {
     isLoading: boolean;
     data: SessionResponse | null;

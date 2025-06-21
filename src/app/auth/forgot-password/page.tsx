@@ -12,8 +12,8 @@ import AuthLayout from "../Authlayout";
 import { H1, H3 } from "@/shared/heading/headingStyles";
 import { isValidEmail } from "@/services/utils";
 import { Loader, LoaderLine } from "@/shared/authCard/cardStyles";
-import { ErrorResponse, RegisterResponse, } from "@/types/index"
-import { RegisterUser } from "@/services/apis/auth"
+import { ErrorResponse, RegisterResponse, Response } from "@/types/index"
+import { RecoverUser } from "@/services/apis/auth"
 import {
   More,
   Agree,
@@ -24,22 +24,16 @@ import {
   ErrorText,
   Guidelines,
   StyledImage,
-  SocialIcons,
   ImageWrapper,
   ButtonWrapper,
-  SocialMediaIcons,
   LoginForm as SignUpForm,
   LoginWrapper as SignUpWrapper,
 } from "../login/loginStyle";
-import PasswordStrengthChecker from "@/shared/passwordChecker";
 
 // Type definitions
 interface User {
   email: string;
-  password: string;
-  type: string;
-  invite_passcode?: string;
-  role?: string;
+ 
 }
 
 interface ApiResponse {
@@ -64,92 +58,26 @@ interface ApiError {
 }
 
 
-const useRegisterMutation = () => {
-  return useMutation<RegisterResponse, ErrorResponse, User>({
-    mutationFn: ({ email, password, role, invite_passcode }: User): Promise<RegisterResponse> => RegisterUser(email, password, role, invite_passcode),    // onError: (error: ErrorResponse) => {
-    //     // console.error('Login error:', error);
-    //     toast.error(error?.message)
-    // },
-
-    // onSuccess: async (data) => {
-    //     // Handle successful login
-    //     console.log(data)
-    //     if (data?.status) {
-    //         const user = {
-    //             ...data?.data?.user,
-    //             corporateEntity: data?.data?.corporateEntity,
-    //             parent: data?.data?.parent,
-    //             access_token: data?.data?.access_token
-    //         };
-    //         // update Session
-    //         //    updateSessionUser(user) as object
-
-    //     }
-
-    // },
+const useRecoverMutation = () => {
+  return useMutation<Response, ErrorResponse, User>({
+    mutationFn: ({ email, }: User): Promise<Response> => RecoverUser(email),    // onError: (error: ErrorResponse) => {
   });
 };
+
 const ForgotPassword: React.FC = () => {
 
-  const { mutateAsync, isPending } = useRegisterMutation()
+  const { mutateAsync, isPending } = useRecoverMutation()
 
 
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const passcodeFromMagicLink: string | undefined = searchParams.get("passcode") ?? undefined;
-  const roleFromMagicLink: string | undefined = searchParams.get("role") ?? undefined;
-  const invitedUserEmail: string | undefined = searchParams.get("email") ?? undefined;
-
-  // Store values in localStorage/sessionStorage with null checks
-  if (typeof window !== "undefined") {
-    if (roleFromMagicLink) localStorage.setItem("roleFromMagicLink", roleFromMagicLink);
-
-  }
 
   const [email, setEmail] = useState<string>("");
-  const [checkPass, setCheckPass] = useState<boolean | undefined>(undefined);
   const [adhere, setAdhere] = useState<boolean>(false)
-  const [password, setPassword] = useState<string>("");
   const [emailError, setEmailError] = useState<boolean>(false);
-  const [btnName, setBtnName] = useState<string>("Create Account");
-  const [passwordError, setPasswordError] = useState<boolean>(false);
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState<boolean>(false);
+  const [btnName, setBtnName] = useState<string>("Recover Account");
 
-  useEffect(() => {
-    if (invitedUserEmail) {
-      setEmail(invitedUserEmail);
-    }
-  }, [invitedUserEmail]);
 
-  // Set the role and passcode to session when the user visits using magic link
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (roleFromMagicLink) {
-        sessionStorage.setItem("roleFromMagicLink", roleFromMagicLink);
-        localStorage.setItem("roleFromMagicLink", roleFromMagicLink);
-      }
-      if (passcodeFromMagicLink) {
-        sessionStorage.setItem("passcodeFromMagicLink", passcodeFromMagicLink);
-        localStorage.setItem("passcodeFromMagicLink", passcodeFromMagicLink);
-      }
-    }
-  }, [passcodeFromMagicLink, roleFromMagicLink]);
 
-  useLayoutEffect(() => {
-    // When the login page loads, preload these pages to improve routing speed and app performance
-    const prefetchLogin = "/auth/login";
-    const prefetchVP = "/auth/verification";
-    const prefetchRP = "/auth/reset-password";
-
-    const prefetchData = (): void => {
-      router.prefetch(prefetchLogin);
-      router.prefetch(prefetchRP);
-      router.prefetch(prefetchVP);
-    };
-
-    prefetchData();
-  }, [router]);
 
   const handleSubmit = async (): Promise<void> => {
     // e.preventDefault();
@@ -163,47 +91,16 @@ const ForgotPassword: React.FC = () => {
       setEmailError(false);
     }
 
-    if (!password?.trim()) {
-      setPasswordError(true);
-    } else {
-      setPasswordError(false);
-    }
-
-    if (!confirmPassword?.trim() || confirmPassword !== password) {
-      setConfirmPasswordError(true);
-      return;
-    } else {
-      setConfirmPasswordError(false);
-    }
-
-    if (confirmPassword !== password) {
-      setConfirmPasswordError(true);
-    } else {
-      setConfirmPasswordError(false);
-    }
-
     // Don't trigger the create account API if the params are not met
     if (
-      !email?.trim() ||
-      !password?.trim() ||
-      !confirmPassword?.trim() ||
-      isValidEmail(email) === false ||
-      checkPass === false
+      !email?.trim() || isValidEmail(email) === false
     ) {
       return;
     }
 
-    // Get the code from localStorage
-    const passcodeFromMagicLinkInLocal: string | null = localStorage.getItem("passcodeFromMagicLink");
-    const role: string | null = localStorage.getItem("roleFromMagicLink");
 
     const payload: User = {
       email: email,
-      password: password,
-      type: "credentials",
-      // The backend needs the passcode from a user invited by a corporate entity. Dynamically add it to the payload obj when it is available
-      invite_passcode: passcodeFromMagicLinkInLocal?.trim() || passcodeFromMagicLink?.trim(),
-      role: role || undefined,
     };
 
     try {
@@ -230,10 +127,6 @@ const ForgotPassword: React.FC = () => {
             type: "error",
           });
 
-          // When the error message is account verification issue
-          // if (error?.data?.verified === false) {
-          //   router.push("/auth/login");
-          // }
         },
       });
 
