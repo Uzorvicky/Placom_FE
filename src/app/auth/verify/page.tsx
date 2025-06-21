@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import UseOTP from "@/hooks/useOTP";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -7,13 +7,14 @@ import { toast } from "react-toastify";
 import { Loader2Icon } from "lucide-react"
 import { useRouter } from "next/navigation";
 import Card from "@/shared/authCard";
-import styled from "styled-components";
 import AuthLayout from "../Authlayout";
 import {  H3, } from "@/shared/heading/headingStyles";
 import { useMutation } from "@tanstack/react-query";
 import api from "@/services/api";
 import { MouseEvent, } from "react";
-
+import {VerifyForgotPasswordWrapper, ButtonWrapper,
+    Section
+} from'@/components/styled/VerifyForgotPasswordWrapper'
 
 interface VerifyForgotPasswordPayload {
     otp: string;
@@ -152,9 +153,7 @@ const VerifyForgotPassword: React.FC = () => {
     return (
         <AuthLayout register={true}>
             <VerifyForgotPasswordWrapper>
-                <Card
-                    isLoading={mutation.isPending}
-                >
+                <Card  isLoading={mutation.isPending} >
                     <div className="w-full flex flex-col space-y-4 mb-5 md:mb-10 text-[#535353]">
                         <span style={{
                             fontSize: "22px",
@@ -212,43 +211,6 @@ const VerifyForgotPassword: React.FC = () => {
 
 export default VerifyForgotPassword;
 
-const Section = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
 
-export const VerifyForgotPasswordWrapper = styled.div`
-  height: 100%;
-  display: flex;
-  padding: 0 1rem;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  
-  @media screen and (max-width: 800px) {
-    width: 100%;
-    height: 100%;
-    padding-top: 2rem;
-  }
-`;
 
-export const ButtonWrapper = styled.div`
-  width: 100%;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  
-  @media screen and (max-width: 800px) {
-    flex: 1;
-    display: flex;
-    margin-top: 5px;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
-`;
 
-export const StyledLink = styled(Link)`
-  color: #0F6862;
-`;
