@@ -6,7 +6,7 @@ interface InputContainerProps {
 }
 
 interface AbsoluteIconProps {
-  eye?: boolean;
+  eye?: boolean | string;
   search?: boolean;
 }
 
@@ -49,6 +49,7 @@ export const StyledInput = styled.input<StyledInputProps>`
   border-radius: 4px;
   border: none;
   position: relative;
+  padding-left:0.5rem;
   padding-right: 1rem;
   box-sizing: border-box;
   background-color: transparent !important;

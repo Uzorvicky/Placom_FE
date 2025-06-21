@@ -1,5 +1,5 @@
 import api from "../api";
-import { LoginResponse, ErrorResponse, RegisterResponse } from "@/types";
+import { LoginResponse, ErrorResponse, RegisterResponse, Response } from "@/types";
 import { store } from "@/store";
 import { toast } from "react-toastify";
 // import { setAuthToken, setUser } from "@/store/slices/authSlices";
@@ -37,6 +37,26 @@ export async function RegisterUser(
 
   try {
     response as RegisterResponse;
+    if (!response.status) {
+      toast.error(response?.message);
+      return response;
+    }
+     toast.success(response?.message);
+
+    return response;
+  } catch {
+   return response
+  }
+}
+
+
+export async function RecoverUser(
+  email: string,
+): Promise<Response> {
+  const response = await api.post(`users/auth/recover`, { email,});
+
+  try {
+    response as Response;
     if (!response.status) {
       toast.error(response?.message);
       return response;
