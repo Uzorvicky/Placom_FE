@@ -2,9 +2,10 @@
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
-import { useLayoutEffect, useState, useEffect, useCallback } from "react";
+import { useLayoutEffect, useState, useEffect, Suspense, useCallback } from "react";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
 import api from "@/services/api";
+import { Loader2Icon } from "lucide-react"
 import Input from "@/shared/Input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox"
@@ -16,22 +17,17 @@ import { ErrorResponse, RegisterResponse, } from "@/types/index"
 import { RegisterUser } from "@/services/apis/auth"
 import {
   More,
-  Agree,
-  Text,
-  Line,
-  Divider,
   Absolute,
   ErrorText,
   Guidelines,
   StyledImage,
-  SocialIcons,
   ImageWrapper,
   ButtonWrapper,
-  SocialMediaIcons,
   LoginForm as SignUpForm,
   LoginWrapper as SignUpWrapper,
 } from "../login/loginStyle";
 import PasswordStrengthChecker from "@/shared/passwordChecker";
+
 
 // Type definitions
 interface User {
@@ -69,24 +65,6 @@ const useRegisterMutation = () => {
     mutationFn: ({ email, password, role, invite_passcode }: User): Promise<RegisterResponse> => RegisterUser(email, password, role, invite_passcode),    // onError: (error: ErrorResponse) => {
     //     // console.error('Login error:', error);
     //     toast.error(error?.message)
-    // },
-
-    // onSuccess: async (data) => {
-    //     // Handle successful login
-    //     console.log(data)
-    //     if (data?.status) {
-    //         const user = {
-    //             ...data?.data?.user,
-    //             corporateEntity: data?.data?.corporateEntity,
-    //             parent: data?.data?.parent,
-    //             access_token: data?.data?.access_token
-    //         };
-    //         // update Session
-    //         //    updateSessionUser(user) as object
-
-    //     }
-
-    // },
   });
 };
 const SignUp: React.FC = () => {
@@ -380,4 +358,12 @@ const SignUp: React.FC = () => {
   );
 };
 
-export default SignUp;
+// export default SignUp;
+
+export default function RegisterForm() {
+  return (
+    <Suspense  fallback={<div className='max-w max-h min-h-[200px] min-w-full'><Loader2Icon className='animate-spain h-10 w-10'/></div>}>
+      <SignUp />
+    </Suspense>
+  );
+}

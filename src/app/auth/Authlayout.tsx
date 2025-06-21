@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import Header from "@/shared/registerHeader";
 import styled from "styled-components";
 import { ReactNode } from "react";
@@ -13,8 +13,6 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, register}) => {
     <Layout>
       <HeaderWrapper>
         <Header 
-        // isAuthScreen 
-        // login={login} 
         register={register}
          />
       </HeaderWrapper>

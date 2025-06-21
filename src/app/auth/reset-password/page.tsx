@@ -1,7 +1,6 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { toast } from "react-toastify";
 import { Loader2Icon } from "lucide-react"
 import { useRouter } from "next/navigation";
@@ -14,13 +13,10 @@ import api from "@/services/api";
 import Input from "@/shared/Input";
 
 
-interface VerifyForgotPasswordPayload {
+interface ResetPasswordPayload {
     email: string;
 }
 
-interface ResendOtpPayload {
-    email: string;
-}
 
 interface ApiResponse {
     message: string;
@@ -40,16 +36,11 @@ const ResetPassword: React.FC = () => {
     const [password, setPass] = useState<string>('')
     const [conpass, setConPass] = useState<string>('')
 
-    const mutation = useMutation<ApiResponse, ApiError, VerifyForgotPasswordPayload>({
+    const mutation = useMutation<ApiResponse, ApiError, ResetPasswordPayload>({
         mutationFn: (payload) => api.verifyForgotPassword(payload)
     });
 
-    const resendOtp = useMutation<ApiResponse, ApiError, ResendOtpPayload>({
-        mutationFn: (payload) => api.resendOtp(payload)
-    });
-    const [isSuccess, setIsSuccess] = useState<boolean>(false);
-    // const [inputError, setInputError] = useState<string | null>(null);
-    const [btnText, setBtnText] = useState<string>("Continue");
+ 
 
 
 
@@ -63,38 +54,25 @@ const ResetPassword: React.FC = () => {
         }
 
         try {
-            const payload: VerifyForgotPasswordPayload = {
+            const payload: ResetPasswordPayload = {
                 email: email,
             };
 
             mutation.mutate(payload, {
                 onSuccess: (data: ApiResponse) => {
-                    setIsSuccess(true);
                     toast.success(data?.message);
-                    // router.push("/auth/reset-password");
-                    router.push("/auth/verified");
+                    router.push("/auth/login");
                 },
                 onError: (error: ApiError) => {
                     const errorMessage = error?.message || "reset password failed";
-                    setBtnText(errorMessage);
-                    setTimeout(() => {
-                        setBtnText("Continue");
-                    }, 2000);
-
                     toast.error(errorMessage);
                 },
             });
         } catch (error) {
             const err = error as ApiError;
             toast.error(err?.message || "Error verifying OTP, Try again");
-            setBtnText("Error! Try Again");
-            setTimeout(() => {
-                setBtnText("Continue");
-            }, 2000);
         }
     };
-
-
 
     return (
         <AuthLayout register={true}>
@@ -150,13 +128,7 @@ const ResetPassword: React.FC = () => {
 
 export default ResetPassword;
 
-const Section = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
-
-export const VerifyForgotPasswordWrapper = styled.div`
+ const VerifyForgotPasswordWrapper = styled.div`
   height: 100%;
   display: flex;
   padding: 0 1rem;
@@ -169,24 +141,4 @@ export const VerifyForgotPasswordWrapper = styled.div`
     height: 100%;
     padding-top: 2rem;
   }
-`;
-
-export const ButtonWrapper = styled.div`
-  width: 100%;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  
-  @media screen and (max-width: 800px) {
-    flex: 1;
-    display: flex;
-    margin-top: 5px;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
-`;
-
-export const StyledLink = styled(Link)`
-  color: #0F6862;
 `;

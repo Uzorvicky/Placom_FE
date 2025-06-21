@@ -1,11 +1,9 @@
 "use client";
 import { useEffect, } from "react";
-import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Card from "@/shared/authCard";
 import AuthLayout from "../Authlayout";
-import { VerifyForgotPasswordWrapper } from '../verify/page'
-
+import {VerifyForgotPasswordWrapper} from'@/components/styled/VerifyForgotPasswordWrapper'
 
 const Page: React.FC = () => {
     const router = useRouter()
