@@ -7,10 +7,10 @@ import { toast } from "react-toastify";
 export async function LoginUser(
   email: string,
   password: string,
-  role:string | undefined,
-  invite_passcode:string | undefined
+  // role:string | undefined,
+  // invite_passcode:string | undefined
 ): Promise<LoginResponse> {
-  const response = await api.post(`users/auth`, { email, password, role, invite_passcode});
+  const response = await api.post(`users/auth`, { email, password});
 
   try {
     response as LoginResponse;
