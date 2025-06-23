@@ -167,7 +167,7 @@ const ForgotPassword: React.FC = () => {
    
             {emailError && <ErrorText>Please enter a valid email</ErrorText>}
           
-            <div className="flex flex-row gap-2  mt-5  !items-start !justify-start p-1 w-full">
+            {/* <div className="flex flex-row gap-2  mt-5  !items-start !justify-start p-1 w-full">
                 <Checkbox
                 checked={adhere}
                 defaultChecked={adhere} 
@@ -189,7 +189,7 @@ const ForgotPassword: React.FC = () => {
                   {"PLACOM Privacy Policy"}
                 </Link>
               </div>
-            </div>
+            </div> */}
             <ButtonWrapper className="mt-2">
               <Button
                 variant={'primary'}

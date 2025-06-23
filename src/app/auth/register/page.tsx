@@ -330,6 +330,7 @@ const SignUp: React.FC = () => {
               <Button
                 variant={'primary'}
                 size={'lg'}
+                disabled={adhere ? false:true }
                 className="w-full bg-[#0F6862] rounded-none !py-6 px-4 text-lg"
                 onClick={() => handleSubmit()}
               >{isPending ? "Creating your account..." : btnName}</Button>
