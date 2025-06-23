@@ -3,9 +3,14 @@ import React from 'react';
 import Image from 'next/image';
 import { Card, CardContent } from "@/components/ui/card"
 import { motion} from 'framer-motion';
-import {products} from "../../page"
+import {products, ProductProps} from"@/lib/data/products"
 
-const Second_Section: React.FC = () => {
+
+interface SecondSectionProps {
+  products?: ProductProps[];
+}
+
+const Second_Section: React.FC<SecondSectionProps> = () => {
     return (      <section className="py-20 bg-white">
             <div className="container mx-auto px-4">
               <div className="flex flex-col md:flex-row gap-5 items-center md:mx-[100px]">

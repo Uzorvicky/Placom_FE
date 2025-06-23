@@ -2,9 +2,23 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowRight } from "lucide-react"
-// import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react"
 import Image from "next/image"
-import { products } from "../../page"
+import { products, ProductProps, } from "@/lib/data/products"
+
+interface StoreProps {
+    name?: string;
+    verified?: boolean;
+    products?: string;
+    rating?: Number;
+    reviews?: Number;
+    image?: string;
+    favourite?: boolean
+}
+
+interface FifthSectionProps {
+    products?: ProductProps[];
+    stores?: StoreProps[];
+}
 
 const stores = [
     {
@@ -45,7 +59,7 @@ const stores = [
     },
 ]
 
-const Fifth_Section: React.FC = () => {
+const Fifth_Section: React.FC<FifthSectionProps> = () => {
     return (<section className="py-20">
         <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 xl:px-[100px]">
             {/* Top selling products */}

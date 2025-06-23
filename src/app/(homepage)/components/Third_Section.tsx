@@ -2,9 +2,13 @@
 import React from 'react';
 import Image from 'next/image';
 import { Card, CardContent } from "@/components/ui/card"
-import {products} from "../../page"
+import {products, ProductProps} from"@/lib/data/products"
 
-const Third_Section: React.FC = () => {
+interface ThirdSectionProps {
+  products?: ProductProps[];
+}
+
+const Third_Section: React.FC<ThirdSectionProps> = () => {
     return (<section className="bg-[#8AC73C40] h-[1050px] md:h-fit overflow-hidden mt-20 md:mt-0">
             <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 xl:px-[100px]">
               <div className="flex flex-col-reverse md:flex-row items-center gap-4 py-10 md:py-0">

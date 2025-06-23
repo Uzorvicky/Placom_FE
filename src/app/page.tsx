@@ -9,77 +9,8 @@ import Fifth_Section from "./(homepage)/components/Fifth_Section"
 import Six_Section from "./(homepage)/components/Six_Section"
 import Seventh_Section from "./(homepage)/components/Seventh_Section"
 
-export const products = [
-  {
-    name: "Onions",
-    userImage: "/userImg.jpg",
-    farmer: "Ushaseer Farms",
-    verified: true,
-    location: "Benue",
-    price: "NGN5,000",
-    originalPrice: "NGN5,000",
-    discount: "-5%",
-    image: "/product.jpg",
-    inStock: true,
-    favourite: true,
-  },
-  {
-    name: "Onions",
-    userImage: "/userImg.jpg",
-    farmer: "Ushaseer Farms",
-    verified: true,
-    location: "Benue",
-    price: "NGN5,000",
-    originalPrice: "NGN5,000",
-    discount: "-5%",
-    image: "/product.jpg",
-    inStock: true,
-    favourite: true,
-  },
-  {
-    name: "Onions",
-    userImage: "/userImg.jpg",
-    farmer: "Ushaseer Farms",
-    verified: true,
-    location: "Benue",
-    price: "NGN5,000",
-    originalPrice: "NGN5,000",
-    discount: "-5%",
-    image: "/product.jpg",
-    inStock: true,
-    favourite: false,
-  },
-  {
-    name: "Onions",
-    userImage: "/userImg.jpg",
-    farmer: "Ushaseer Farms",
-    verified: true,
-    location: "Benue",
-    price: "NGN5,000",
-    originalPrice: "NGN5,000",
-    discount: "-5%",
-    image: "/product.jpg",
-    inStock: true,
-    favourite: false,
-  },
-  {
-    name: "Onions",
-    userImage: "/userImg.jpg",
-    farmer: "Ushaseer Farms",
-    verified: true,
-    location: "Benue",
-    price: "NGN5,000",
-    originalPrice: "NGN5,000",
-    discount: "-5%",
-    image: "/product.jpg",
-    inStock: true,
-    favourite: true,
-  },
-]
-
-export default function Home() {
+ const Home : React.FC = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
-
   return (
     <main className="min-h-screen">
       <First_Section
@@ -218,5 +149,6 @@ export default function Home() {
     </main>
   );
 }
+export default Home
 
 
