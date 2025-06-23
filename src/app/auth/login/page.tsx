@@ -178,7 +178,7 @@ const Login: React.FC = () => {
             </div>
 
                
-              <div className="-font-work-sans flex items-start justify-start">
+              <div className="-font-work-sans flex !items-start !justify-start p-1 w-full">
                 <Link
                   className="text-[#0F6862] pl-1 text-sm underline"
                   href={"/auth/forgot-password"}
@@ -197,7 +197,7 @@ const Login: React.FC = () => {
               >{ "Login"}</Button>
               <div className="mt-10 flex items-end justify-end ">
                 You {"don't"} have an account?
-                <Guidelines href={"/auth/register"}>Create Account</Guidelines>
+                <Guidelines href={"/auth/register"}> Create Account</Guidelines>
               </div>
             </ButtonWrapper>
 
